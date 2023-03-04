@@ -18,9 +18,9 @@ import axios from "axios";
 // import Phrases from "./Phrases";
 import NewMenu from "./NewMenu";
 // import Quiz from "../components/Quiz";
-
 // import CardTuto from "./CardTuto";
 let url = "";
+
 const urlImageCard = "https://res.cloudinary.com/tolumaster/image/upload/v1/";
 
 const Cards = () => {
@@ -34,6 +34,7 @@ const Cards = () => {
   const [isPremium, setIsPremium] = useState(false);
   const [cards, setCards] = useState([]);
   const [loader, setLoader] = useState(false);
+  // console.log(JSON.parse(localStorage.getItem("cards")));
 
   const fetchAPi = async () => {
     setLoader(true);
@@ -43,7 +44,14 @@ const Cards = () => {
     axios.get(url).then((res) => {
       setCards(res.data);
       setLoader(false);
-      console.log(res.data);
+      if (paramsUrl.section === "mis-cartas") {
+        localStorage.setItem("user_cards", JSON.stringify(res.data));
+      } else {
+        localStorage.setItem(
+          `${paramsUrl.section}_cards`,
+          JSON.stringify(res.data)
+        );
+      }
     });
   };
 
@@ -55,8 +63,20 @@ const Cards = () => {
         setIsPremium(res.user.premium);
       });
   };
+  const getCards = (key) => {
+    if (localStorage.getItem(key)) {
+      setCards(JSON.parse(localStorage.getItem(key)));
+    } else {
+      fetchAPi();
+    }
+  };
+
   useEffect(() => {
-    fetchAPi();
+    if (paramsUrl.section === "mis-cartas") {
+      getCards("user_cards");
+    } else {
+      getCards(`${paramsUrl.section}_cards`);
+    }
     getUserData();
   }, []);
 

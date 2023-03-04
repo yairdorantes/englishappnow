@@ -13,7 +13,10 @@ const SubMenuCard = () => {
   const fetchData = () => {
     helpHttp()
       .get(`${mySite}categories`)
-      .then((res) => setCategories(res));
+      .then((res) => {
+        setCategories(res);
+        localStorage.setItem("categories", JSON.stringify(res));
+      });
   };
 
   // const items = ["orange-600", "lime-600", "blue-400", "pink-400", "red-600"];
@@ -26,7 +29,11 @@ const SubMenuCard = () => {
   ];
 
   useEffect(() => {
-    fetchData();
+    if (localStorage.getItem("categories")) {
+      setCategories(JSON.parse(localStorage.getItem("categories")));
+    } else {
+      fetchData();
+    }
   }, []);
   return (
     <div>

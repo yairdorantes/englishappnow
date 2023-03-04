@@ -1,6 +1,7 @@
 import cards from "../media/cards.png";
 import blog from "../media/blog.png";
 import trofeo from "../media/trofeo.png";
+import iconMenu from "../media/menu1.png";
 import user from "../media/user.png";
 import { useState } from "react";
 
@@ -149,23 +150,9 @@ const NewMenu = () => {
               data-dial-trigger="hover"
               aria-controls="speed-dial-menu-hover"
               aria-expanded="false"
-              className="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+              className="flex items-center justify-center text-white rounded-full w-14 h-14 hover:bg-blue-800  bg-secondary-focus focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
             >
-              <svg
-                aria-hidden="true"
-                className="w-8 h-8 transition-transform group-hover:rotate-45"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                ></path>
-              </svg>
+              <img className="w-6" src={iconMenu} alt="" />
               <span className="sr-only">Open actions menu</span>
             </button>
           </div>

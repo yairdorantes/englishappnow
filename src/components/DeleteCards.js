@@ -30,7 +30,7 @@ const DeleteCards = () => {
   let { user } = useContext(AuthContext);
 
   const [cards, setCards] = useState();
-  const [cardsAPI, setCardsAPI] = useState();
+  // const [cardsAPI, setCardsAPI] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [cardId, setCardId] = useState();
   const [actualCardTitle, setActualCardTitle] = useState("");
@@ -43,7 +43,7 @@ const DeleteCards = () => {
     const response = await fetch(url);
     const responseJSON = await response.json();
     setCards(responseJSON);
-    setCardsAPI(responseJSON);
+    // setCardsAPI(responseJSON);
     console.log(responseJSON);
   };
   const deleteCardF = () => {
@@ -55,10 +55,11 @@ const DeleteCards = () => {
         console.log(res);
         setModalIsOpen(false);
         fetchAPi();
+        localStorage.removeItem("cards");
       });
   };
   const openModal = () => {
-    modalIsOpen ? setModalIsOpen(false) : setModalIsOpen(true);
+    setModalIsOpen(!modalIsOpen);
   };
   const getCurrentData = (title, id) => {
     setEditOrDelete("del");
@@ -80,16 +81,19 @@ const DeleteCards = () => {
       });
       if (results.length === 0 || query === "") {
         console.log("empty");
-        setCards(cardsAPI);
+        setCards(JSON.parse(localStorage.getItem("user_cards")));
       } else {
         setCards({ cards: results });
       }
     }
-    // console.log(e.target.value.length);
   };
 
   useEffect(() => {
-    fetchAPi();
+    if (localStorage.getItem("user_cards")) {
+      setCards(JSON.parse(localStorage.getItem("user_cards")));
+    } else {
+      fetchAPi();
+    }
   }, []);
 
   return (
