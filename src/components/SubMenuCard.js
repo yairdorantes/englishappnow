@@ -9,6 +9,7 @@ import NewMenu from "./NewMenu";
 
 // http://127.0.0.1:8000/api/cards/animales
 const SubMenuCard = () => {
+  // console.log(mySite, "llalala");
   const [categories, setCategories] = useState([]);
   const fetchData = () => {
     helpHttp()
@@ -29,8 +30,13 @@ const SubMenuCard = () => {
   ];
 
   useEffect(() => {
-    if (localStorage.getItem("categories")) {
-      setCategories(JSON.parse(localStorage.getItem("categories")));
+    const storedCategories = JSON.parse(localStorage.getItem("categories"));
+    if (
+      storedCategories &&
+      storedCategories.categories &&
+      storedCategories.categories.length > 0
+    ) {
+      setCategories(storedCategories);
     } else {
       fetchData();
     }

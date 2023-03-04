@@ -20,7 +20,6 @@ import NewMenu from "./NewMenu";
 // import Quiz from "../components/Quiz";
 // import CardTuto from "./CardTuto";
 let url = "";
-
 const urlImageCard = "https://res.cloudinary.com/tolumaster/image/upload/v1/";
 
 const Cards = () => {
