@@ -105,7 +105,7 @@ const FormCard = ({ modalIsOpen, openModal, fetchApi, cardData }) => {
           .then((res) => {
             res.err ? setMessage(true) : setMessage(false);
             fetchApi();
-            localStorage.removeItem("cards");
+            localStorage.removeItem("user_cards");
           });
         setIsLoading(false);
       } else {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { helpHttp } from "../helpers/helpHttp";
@@ -6,12 +6,16 @@ import eyes from "../media/eye2.png";
 import closeye from "../media/eyeclose.png";
 import Loader from "./Loader";
 import mySite from "./Domain";
+import axios from "axios";
+import hello from "../media/hello.png";
+
 let url = `${mySite}users/`;
 
 const initialForm = {
   username: "",
   email: "",
   password: "",
+  // utc: false,
 };
 const NewSignUp = () => {
   let { loginUser } = useContext(AuthContext);
@@ -29,23 +33,28 @@ const NewSignUp = () => {
     });
   };
   const createData = async (data) => {
-    // console.log(data.username);
-    let options = {
-      body: data,
-      headers: { "content-type": "application/json" },
-    };
     setLoader(true);
-    await helpHttp()
-      .post(url, options)
+    await axios
+      .post(url, data)
       .then((res) => {
         console.log(res);
+        if (res.status === 200) {
+          loginUser({ username: form.username, password: form.password });
+        }
         setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 409) {
+          alert("Ese nombre de usuario ya existe, elige otro");
+          setLoader(false);
+        }
       });
 
     // loginAfterSignUp(data);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.username || !form.email || !form.password) {
       alert("Por favor llena todos los datos");
@@ -56,10 +65,11 @@ const NewSignUp = () => {
         return;
       }
     }
-    setForm((form["password"] = form["password"]));
+    // setForm((form["password"] = form["password"]));
+    setForm({ ...form, password: form.password });
+
     createData(form);
 
-    loginUser(e);
     handleReset();
   };
   const handleReset = () => setForm(initialForm);
@@ -95,12 +105,8 @@ const NewSignUp = () => {
               href="#"
               className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
-              <img
-                className="w-8 h-8 mr-2"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                alt="logo"
-              />
-              Flowbite
+              <img className="w-8 h-8 mr-2" src={hello} alt="logo" />
+              EnglishApp
             </div>
             <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -130,19 +136,20 @@ const NewSignUp = () => {
                       onChange={handleChange}
                     />
                   </div>
+
                   <div>
                     <label
                       htmlFor="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Email
+                      Correo Institucional (UTC)
                     </label>
                     <input
                       type="email"
                       name="email"
                       id="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="nombre@ejemplo.com"
+                      placeholder="tu.nombre@edu.utc.mx"
                       required=""
                       value={form.email}
                       onChange={handleChange}
@@ -154,7 +161,7 @@ const NewSignUp = () => {
                       htmlFor="password"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Password
+                      Contraseña
                     </label>
                     <input
                       type={isVisiblePass ? "text" : "password"}

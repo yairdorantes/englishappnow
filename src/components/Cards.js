@@ -64,7 +64,11 @@ const Cards = () => {
   };
   const getCards = (key) => {
     if (localStorage.getItem(key)) {
-      setCards(JSON.parse(localStorage.getItem(key)));
+      const beforeCards = JSON.parse(localStorage.getItem(key));
+
+      setCards({
+        cards: beforeCards.cards.sort((a, b) => 0.5 - Math.random()),
+      });
     } else {
       fetchAPi();
     }

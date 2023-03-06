@@ -100,7 +100,7 @@ const SubMenuCard = () => {
               </div>
             </Link>
           </div>
-          {categories.categories ? (
+          {categories.categories &&
             categories.categories.map((category, key) => {
               return (
                 <div
@@ -167,10 +167,7 @@ const SubMenuCard = () => {
                   </Link>
                 </div>
               );
-            })
-          ) : (
-            <Loader />
-          )}
+            })}
         </div>
       </div>
     </div>

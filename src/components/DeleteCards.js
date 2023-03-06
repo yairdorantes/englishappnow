@@ -55,7 +55,7 @@ const DeleteCards = () => {
         console.log(res);
         setModalIsOpen(false);
         fetchAPi();
-        localStorage.removeItem("cards");
+        localStorage.removeItem("user_cards");
       });
   };
   const openModal = () => {
