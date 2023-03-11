@@ -33,7 +33,6 @@ const Cards = () => {
   const [isPremium, setIsPremium] = useState(false);
   const [cards, setCards] = useState([]);
   const [loader, setLoader] = useState(false);
-  // console.log(JSON.parse(localStorage.getItem("cards")));
 
   const fetchAPi = async () => {
     setLoader(true);
@@ -226,6 +225,7 @@ const Cards = () => {
         fetchApi={fetchAPi}
         modalIsOpen={modalIsOpen}
         openModal={openModal}
+        cards={cards}
       />
     </>
   );

@@ -23,7 +23,8 @@ const customStyles = {
   },
   overlay: { zIndex: 999, backgroundColor: "#18191ab1" },
 };
-const FormCard = ({ modalIsOpen, openModal, fetchApi, cardData }) => {
+const FormCard = ({ modalIsOpen, openModal, fetchApi, cardData, cards }) => {
+  console.log(cards);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [showBtn, setShowBtn] = useState(true);
@@ -95,35 +96,46 @@ const FormCard = ({ modalIsOpen, openModal, fetchApi, cardData }) => {
         headers: { "content-type": "multipart/form-data" },
       };
       // console.log(options);
-
-      if (cardData) {
-        let urlEditCard = `${mySite}card-edit/${cardData.id}`;
-        console.log("********", form.file, "*********");
-        setIsLoading(true);
-        helpHttp()
-          .put(urlEditCard, options)
-          .then((res) => {
-            res.err ? setMessage(true) : setMessage(false);
-            fetchApi();
-            localStorage.removeItem("user_cards");
-          });
-        setIsLoading(false);
+      if (
+        cards.cards.some(
+          (card) => card.cardTitle.toLowerCase() === form.title.toLowerCase()
+        ) ||
+        cards.cards.some(
+          (card) =>
+            card.cardMeaning.toLowerCase() === form.meaning.toLowerCase()
+        )
+      ) {
+        alert("Esa carta ya existe");
       } else {
-        setIsLoading(true);
-        setShowBtn(false);
-        helpHttp()
-          .post(url, options)
-          .then((res) => {
-            res.err ? setMessage(true) : setMessage(false);
-            fetchApi();
-          });
-        setIsLoading(false);
+        if (cardData) {
+          let urlEditCard = `${mySite}card-edit/${cardData.id}`;
+          console.log("********", form.file, "*********");
+          setIsLoading(true);
+          helpHttp()
+            .put(urlEditCard, options)
+            .then((res) => {
+              res.err ? setMessage(true) : setMessage(false);
+              fetchApi();
+              localStorage.removeItem("user_cards");
+            });
+          setIsLoading(false);
+        } else {
+          setIsLoading(true);
+          setShowBtn(false);
+          helpHttp()
+            .post(url, options)
+            .then((res) => {
+              res.err ? setMessage(true) : setMessage(false);
+              fetchApi();
+            });
+          setIsLoading(false);
 
-        setForm(initialForm);
-        setOptionSelected("");
+          setForm(initialForm);
+          setOptionSelected("");
+        }
+        !message && openModal();
+        setShowBtn(true);
       }
-      !message && openModal();
-      setShowBtn(true);
     }
     // } else {
     //   alert("llena");

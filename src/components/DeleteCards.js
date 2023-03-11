@@ -77,7 +77,10 @@ const DeleteCards = () => {
     console.log(query);
     if (cards && cards.cards) {
       const results = cards.cards.filter((card) => {
-        return card.cardTitle.toLowerCase().includes(query);
+        return (
+          card.cardTitle.toLowerCase().includes(query) ||
+          card.cardMeaning.toLowerCase().includes(query)
+        );
       });
       if (results.length === 0 || query === "") {
         console.log("empty");
@@ -148,7 +151,8 @@ const DeleteCards = () => {
               return (
                 <div key={card.id} className="container-card-delete">
                   <h3 style={{ textAlign: "center", margin: "5px" }}>
-                    {card.cardTitle}
+                    <div className="font-bold">{card.cardTitle}</div>
+                    <div className="">({card.cardMeaning})</div>
                   </h3>
                   <img
                     className="delete-img-card"
